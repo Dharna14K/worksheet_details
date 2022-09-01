@@ -1,91 +1,55 @@
 package com.timesheet.details.controller;
 
-import com.timesheet.details.utility.JWTAuthentication;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.timesheet.details.model.Worksheet;
+import com.timesheet.details.service.WorksheetService;
 import org.springframework.beans.factory.annotation.Autowired;
-/*import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;*/
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
+@RequestMapping("/rest/worksheet")
 public class WorksheetController {
-
     @Autowired
-    private JWTAuthentication jwtAuthentication;
-
-
-    Logger log = LoggerFactory.getLogger(WorksheetController.class);
-
-    @GetMapping("/welcome")
-    public String greeting() {
-        String name="dharna";
-        log.debug("Request {}", name);
-        String response = "Hi " + name + " Welcome to Java Techie";
-        log.debug("Response {}", response);
-        return response;
+    private WorksheetService worksheetService;
+    @GetMapping("/{worksheetId}")
+    public ResponseEntity<Worksheet> getWorksheetDetails(@PathVariable("worksheetId") Integer worksheetId) {
+        Worksheet worksheet = new Worksheet(worksheetService.getWorksheet(worksheetId).get());
+        return new ResponseEntity<>(worksheet, HttpStatus.OK);
     }
 
-    @RequestMapping("/welcomekro")
-    public String worksheet(){
-
-       return  jwtAuthentication.generateToken();
-
-    }
-    @GetMapping("/worksheet")
-    public String getWorksheet() {
-       return "Here is the worksheet";
+    @GetMapping()
+    public ResponseEntity<List<Worksheet>> getAllWorksheets() {
+        List<Worksheet> worksheetList = new ArrayList<>();
+        WorksheetService.list().forEach(s -> worksheetList.add(new Worksheet(s)));
+        return new ResponseEntity<>(worksheetList, HttpStatus.OK);
     }
 
-    //retrieve expiration date from jwt token
-   /* public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
+    @PostMapping()
+    public ResponseEntity<Worksheet> addWorksheet(@RequestBody Worksheet worksheet) {
+        Worksheet worksheet1 = new Worksheet(worksheetService.addWorksheet(worksheet));
+        return new ResponseEntity<>(worksheet1, HttpStatus.OK);
     }
 
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
+    @PutMapping()
+    public ResponseEntity<Worksheet> updateWorksheet(@RequestBody Worksheet worksheet) {
+        Worksheet worksheet1 = new Worksheet(worksheetService.updateWorksheet(worksheet));
+        return new ResponseEntity<>(worksheet1, HttpStatus.OK);
     }
 
-
-    //for retrieving any information from token we will need the secret key
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    @DeleteMapping("/{WorksheetId}")
+    public ResponseEntity deleteWorksheet(@PathVariable("worksheetId") Integer worksheetId) {
+        worksheetService.deleteByWorksheetId(worksheetId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    //check if the token has expired
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }*/
-   /* @PostMapping("/authenticate")
-    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) {
-
-
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            jwtRequest.getUsername(),
-                            jwtRequest.getPassword()
-                    )
-            );
-
-
-        final UserDetails userDetails
-                = userService.loadUserByUsername(jwtRequest.getUsername());
-
-        final String token =
-                jwtUtility.generateToken(userDetails);
-
-        return  new JwtResponse(token);
-    }*/
-
-
+    @DeleteMapping()
+    public ResponseEntity deleteWorksheet(@RequestBody Worksheet worksheet) {
+        worksheetService.deleteWorksheet(worksheet);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }
