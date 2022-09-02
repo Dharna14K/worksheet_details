@@ -1,7 +1,6 @@
 package com.timesheet.details.service;
 
-import com.timesheet.details.model.Worksheet;
-import com.timesheet.details.model.WorksheetDetails;
+import com.timesheet.details.entity.WorksheetDetailsEntity;
 import com.timesheet.details.repository.WorksheetDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,24 +14,24 @@ public class WorksheetDetailsService {
         @Autowired
         WorksheetDetailsRepository worksheetDetailsRepository;
 
-        public Optional<WorksheetDetails> getWorksheetDetails(Integer wsdetailsId) {
+        public Optional<WorksheetDetailsEntity> getWorksheetDetails(Integer wsdetailsId) {
             return worksheetDetailsRepository.findById(wsdetailsId);
         }
 
-        public List<WorksheetDetails> list() {
+        public List<WorksheetDetailsEntity> list() {
             return worksheetDetailsRepository.findAll();
         }
 
-        public WorksheetDetails addWorksheetDetails(WorksheetDetails worksheetDetails) {
+        public WorksheetDetailsEntity addWorksheetDetails(WorksheetDetailsEntity worksheetDetails) {
             return worksheetDetailsRepository.saveAndFlush(worksheetDetails);
         }
 
 
-        public WorksheetDetails updateWorksheetDetails( WorksheetDetails worksheetDetails) {
+        public WorksheetDetailsEntity updateWorksheetDetails( WorksheetDetailsEntity worksheetDetails) {
             return worksheetDetailsRepository.saveAndFlush(worksheetDetails);
         }
 
-        public void deleteWorksheetDetails( WorksheetDetails worksheetDetails) {
+        public void deleteWorksheetDetails( WorksheetDetailsEntity worksheetDetails) {
             worksheetDetailsRepository.delete(worksheetDetails);
         }
 

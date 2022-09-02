@@ -1,9 +1,8 @@
 package com.timesheet.details.controller;
 
-import com.timesheet.details.model.Worksheet;
+import com.timesheet.details.entity.WorksheetDetailsEntity;
 import com.timesheet.details.model.WorksheetDetails;
 import com.timesheet.details.service.WorksheetDetailsService;
-import com.timesheet.details.service.WorksheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/worksheet/details")
 public class WorksheetDetailsController {
+
     @Autowired
     private WorksheetDetailsService worksheetDetailsService;
+
     @GetMapping("/{wsdetailsId}")
     public ResponseEntity<WorksheetDetails> getWorksheetDetails(@PathVariable("wsdetailsId") Integer wsdetailsId) {
         WorksheetDetails worksheetDetails = new WorksheetDetails(worksheetDetailsService.getWorksheetDetails(wsdetailsId).get());
@@ -31,15 +32,15 @@ public class WorksheetDetailsController {
     }
 
     @PostMapping()
-    public ResponseEntity<WorksheetDetails> addWorksheetDetails(@RequestBody WorksheetDetails worksheetDetails) {
-        WorksheetDetails worksheetDetails1 = new WorksheetDetails(worksheetDetailsService.addWorksheetDetails(worksheetDetails));
-        return new ResponseEntity<>(worksheetDetails1, HttpStatus.OK);
+    public ResponseEntity<WorksheetDetails> addWorksheetDetails(@RequestBody WorksheetDetailsEntity worksheetDetailsEntity) {
+        WorksheetDetails worksheetDetails = new WorksheetDetails(worksheetDetailsService.addWorksheetDetails(worksheetDetailsEntity));
+        return new ResponseEntity<>(worksheetDetails, HttpStatus.OK);
     }
 
     @PutMapping()
-    public ResponseEntity<WorksheetDetails> updateWorksheetDetails(@RequestBody WorksheetDetails worksheetDetails) {
-        WorksheetDetails worksheetDetails1 = new WorksheetDetails(worksheetDetailsService.updateWorksheetDetails(worksheetDetails));
-        return new ResponseEntity<>(worksheetDetails1, HttpStatus.OK);
+    public ResponseEntity<WorksheetDetails> updateWorksheetDetails(@RequestBody WorksheetDetailsEntity worksheetDetailsEntity) {
+        WorksheetDetails worksheetDetails = new WorksheetDetails(worksheetDetailsService.updateWorksheetDetails(worksheetDetailsEntity));
+        return new ResponseEntity<>(worksheetDetails, HttpStatus.OK);
     }
 
     @DeleteMapping("/{wsdetailsId}")
@@ -49,8 +50,8 @@ public class WorksheetDetailsController {
     }
 
     @DeleteMapping()
-    public ResponseEntity deleteWorksheetDetails(@RequestBody WorksheetDetails worksheetDetails) {
-        worksheetDetailsService.deleteWorksheetDetails(worksheetDetails);
+    public ResponseEntity deleteWorksheetDetails(@RequestBody WorksheetDetailsEntity worksheetDetailsEntity) {
+        worksheetDetailsService.deleteWorksheetDetails(worksheetDetailsEntity);
         return new ResponseEntity(HttpStatus.OK);
     }
 

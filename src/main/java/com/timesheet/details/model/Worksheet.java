@@ -1,37 +1,27 @@
 package com.timesheet.details.model;
 
+import com.timesheet.details.entity.WorksheetEntity;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 public class Worksheet {
 
     private Integer worksheetId;
 
     private Integer employeeId;
 
-    private Integer monthValue;
+    private String monthValue;
 
-    public Worksheet(Worksheet worksheet) {
-    }
+    private List<WorksheetDetails> workSheetDetails;
 
-    public Integer getWorksheetId() {
-        return worksheetId;
-    }
-
-    public void setWorksheetId(Integer worksheetId) {
-        this.worksheetId = worksheetId;
-    }
-
-    public Integer getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public Integer getMonthValue() {
-        return monthValue;
-    }
-
-    public void setMonthValue(Integer monthValue) {
-        this.monthValue = monthValue;
+    public Worksheet(WorksheetEntity worksheetEntity) {
+        this.worksheetId = worksheetEntity.getWorksheetId();
+        this.employeeId = worksheetEntity.getEmployeeId();
+        this.monthValue = worksheetEntity.getMonthValue();
+        this.workSheetDetails = new ArrayList<>();
+        worksheetEntity.getWorksheetEntityList().forEach(s -> this.workSheetDetails.add(new WorksheetDetails(s)));
     }
 }

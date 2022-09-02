@@ -11,7 +11,6 @@ import java.util.Date;
 @Entity(name = "WORKSHEET_DETAILS")
 public class WorksheetDetailsEntity {
 
-    //WSDETAILS_ID, WORKSHEET_ID, WORK_STATUS, NO_OF_HOURS, PROJECT_CODE, DATE
     @Id
     @Column(name = "WSDETAILS_ID")
     private Integer wsdetailsId;
